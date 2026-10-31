@@ -45,7 +45,13 @@ export default function InboxPage() {
 
   const open = (email) => {
     update({ id: email.id }, { resetPage: false });
-    if (!email.isRead) actions.markOpened(email.id).then(list.reload);
+    if (!email.isRead) {
+      // The open email loads in parallel with the mark-read call, so refresh it too or its button keeps saying "Mark read"
+      actions.markOpened(email.id).then(() => {
+        list.reload();
+        detail.reload();
+      });
+    }
   };
 
   const toggleOpenRead = async () => {
