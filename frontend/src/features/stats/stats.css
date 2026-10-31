@@ -1,0 +1,6 @@
+.activity-plot.tall{height:290px}
+.chart-note{padding:0 23px 20px;color:var(--muted);font-size:11px}
+.product-count{color:var(--muted);font-weight:500}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* Product rows are not links on their own, so they do not get a hover highlight */
+.product-row.demand-row:hover{background:transparent!important}

@@ -1,0 +1,19 @@
+.profile{position:relative}
+.profile-button{border:0;cursor:pointer;width:34px;height:34px}
+.profile-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(280px,calc(100vw - 32px));background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;box-shadow:0 20px 50px #0b173c2e;z-index:20;overflow:hidden}
+.profile-head{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--line)}
+.profile-head div{display:grid;min-width:0}
+.profile-head b,.profile-head small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.profile-head small{color:var(--muted)}
+.profile-item{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;color:var(--ink);padding:13px 16px;min-height:44px;text-align:left;font-weight:600}
+.profile-item:hover{background:var(--hover)}
+.profile-sidebar{width:100%}
+.user-trigger{width:100%;background:none;border-width:1px 0 0;border-style:solid;border-color:var(--line);color:var(--ink);font:inherit;text-align:left;cursor:pointer;border-radius:0}
+.user-trigger:hover,.user-trigger[aria-expanded="true"]{background:color-mix(in srgb,var(--ink) 6%,var(--panel))}
+.user-trigger:hover .avatar,.user-trigger[aria-expanded="true"] .avatar{background:color-mix(in srgb,var(--accent) 22%,var(--panel))!important;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 35%,transparent)}
+.user-text{display:grid;min-width:0;flex:1}
+.user-text b,.user-text small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-chevron{color:var(--muted);flex-shrink:0}
+.profile-panel.from-sidebar{top:auto;bottom:calc(100% + 8px);left:0;right:auto;width:260px}
+.sidebar-collapsed .profile-panel.from-sidebar{bottom:0;left:calc(100% + 10px)}
+.sidebar-collapsed .user-chevron{display:none}

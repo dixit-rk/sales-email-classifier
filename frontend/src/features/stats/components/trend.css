@@ -1,0 +1,32 @@
+.trend{--plot-height:260px;display:grid;grid-template-columns:40px minmax(0,1fr);grid-template-rows:var(--plot-height) 30px;margin:0 23px 10px}
+.trend-axis{position:relative;grid-row:1;grid-column:1}
+.trend-axis span{position:absolute;right:10px;transform:translateY(50%);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.trend-plot{position:relative;grid-row:1;grid-column:2;border-bottom:1px solid color-mix(in srgb,var(--ink) 20%,transparent)}
+.trend-grid{position:absolute;left:0;right:0;height:1px;background:var(--line);pointer-events:none}
+.trend-bars{position:absolute;inset:0;display:grid;column-gap:clamp(2px,.6vw,10px)}
+.trend-column{position:relative;display:flex;align-items:flex-end;justify-content:center;outline-offset:2px;min-width:0}
+.trend-bar{position:relative;width:min(100%,34px);border-radius:5px 5px 0 0;background:var(--chart-bg);transition:background .15s}
+.trend-bar.peak{background:var(--chart-active)}
+.trend-column:hover .trend-bar,.trend-column:focus-visible .trend-bar{background:var(--accent)}
+.trend-tip{position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);z-index:3;display:grid;gap:2px;white-space:nowrap;background:#182d4d;color:#fff;border-radius:8px;padding:8px 11px;font-size:12px;opacity:0;visibility:hidden;pointer-events:none;box-shadow:0 9px 26px #0005;transition:opacity .12s}
+.trend-tip small{color:#b8cbe5;font-size:11px}
+.trend-column.tip-start .trend-tip{left:0;transform:none}
+.trend-column.tip-end .trend-tip{left:auto;right:0;transform:none}
+.trend-column:hover .trend-tip,.trend-column:focus-visible .trend-tip{opacity:1;visibility:visible}
+[data-theme="dark"] .trend-tip{background:#edf4ff;color:#15253c}
+[data-theme="dark"] .trend-tip small{color:#4a5f7c}
+.trend-empty{position:absolute;inset:0;display:grid;place-items:center;margin:0;color:var(--muted);pointer-events:none}
+.trend-labels{grid-row:2;grid-column:2;display:grid;column-gap:clamp(2px,.6vw,10px);padding-top:8px}
+.trend-labels span{font-size:11px;color:var(--muted);text-align:center;white-space:nowrap;overflow:visible;min-width:0}
+.trend-labels span{display:flex;justify-content:center}
+.analytics-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.analytics-toolbar .select-button,.analytics-toolbar .date-button,.analytics-toolbar .btn{box-sizing:border-box;height:40px;min-height:40px;padding:0 14px;font-size:13px;font-weight:600;border-radius:10px;gap:8px}
+.analytics-toolbar .btn svg{width:15px;height:15px}
+.range-error{order:99;flex-basis:100%;margin:0;text-align:right}
+.range-summary{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 23px 12px;color:var(--muted);font-size:12px}
+@media(max-width:600px){.analytics-toolbar .select-button,.analytics-toolbar .date-button,.analytics-toolbar .btn{height:44px;min-height:44px}.trend{--plot-height:200px;margin:0 12px 10px;grid-template-columns:32px minmax(0,1fr)}.analytics-toolbar{justify-content:flex-start;width:100%}.range-error{text-align:left}}
+@media(prefers-reduced-motion:reduce){.trend-bar,.trend-tip{transition:none}}
+.trend-panel{align-self:start}
+.trend.compact{--plot-height:170px;margin:0 20px 8px}
+/* Chart tooltips may extend past the card edge instead of being clipped by it */
+.panel.allow-overflow{overflow:visible}

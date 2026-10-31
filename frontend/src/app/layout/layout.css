@@ -1,0 +1,16 @@
+.mobile-nav a{border:0;background:none;display:grid;place-items:center;gap:4px;color:var(--muted);font-size:10px;text-decoration:none;min-width:44px;min-height:44px}
+.mobile-nav a.active{color:var(--accent)}
+.mobile-nav a svg{width:19px}
+.side-bottom .nav{text-decoration:none}
+.user-text{min-width:0}
+.user-text small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topbar-help{display:none}
+@media(max-width:760px){.topbar-help{display:inline-flex;min-width:44px;min-height:44px}}
+.crumb b{white-space:nowrap}
+.crumb-root{display:inline-flex;align-items:center;gap:10px}
+@media(max-width:760px){.crumb-root{display:none}}
+.sidebar .brand .collapse-toggle{align-self:center}
+.online{text-decoration:none}
+a.online:hover{filter:brightness(.96)}
+.online.offline{background:var(--warning-bg)!important;color:var(--warning-ink)!important}
+.workspace .sidebar{z-index:4}

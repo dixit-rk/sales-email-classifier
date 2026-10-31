@@ -1,0 +1,53 @@
+.tabs-row{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding-right:24px;flex-wrap:wrap}
+.tabs-row .tabs{border:0;flex:1}
+.filters-inline{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.filters-inline .search{flex:1;min-width:240px;margin-top:0;background:var(--panel)}
+.thread{display:flex;gap:12px;align-items:flex-start}
+.thread .check{margin-top:3px}
+.thread-body{flex:1;min-width:0;display:grid;gap:8px;text-align:left;border:0;background:none;color:inherit;padding:0;cursor:pointer}
+.thread-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.thread-subject{font-weight:700}
+.thread-snippet{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.threads{list-style:none;margin:0;padding:0}
+.thread.selected{padding-left:20px}
+.thread-body .meta{margin-top:2px}
+.inbox-list .selection-bar{border-top:0}
+.inbox-shell .detail-back{display:none;margin-left:-7px}
+.review-list{list-style:none;margin:0;padding:0}
+.review-check{margin-top:4px}
+.review-list-wrap .selection-bar{padding:12px 20px;border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-bottom:16px}
+.review-list-wrap .pagination{border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-top:16px}
+.inbox-list .pagination{margin-top:auto}
+@media(max-width:760px){.inbox-shell .detail-back{display:inline-flex}.review-heading{flex-wrap:wrap}}
+a.inquiry{color:inherit;text-decoration:none}
+.recent-panel .inquiry{flex:0 0 auto}
+.tabs-row .select-wrap{margin-left:auto}
+.recent-panel{align-self:start}
+.recent-panel .inquiry{flex:0 0 auto;min-height:0;grid-template-columns:44px minmax(0,1fr) auto;gap:14px;padding:16px 23px}
+.recent-panel .sender-avatar{width:44px;height:44px;font-size:17px}
+.recent-panel .sender{font-size:15px;margin-bottom:3px}
+.recent-panel .subject{font-size:13.5px}
+.recent-panel .meta{margin-top:7px}
+.recent-panel .tag{font-size:11px;padding:4px 9px}
+.recent-panel .time{font-size:12px;align-self:start;padding-top:3px}
+.empty-detail{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 32px;gap:10px}
+.empty-detail h2{margin:14px 0 0;font:800 20px Manrope;color:var(--ink)}
+.empty-detail p{margin:0;max-width:340px;line-height:1.7;color:var(--muted)}
+.empty-detail-art{position:relative;width:150px;height:150px;display:grid;place-items:center}
+.empty-detail-ring{position:absolute;border-radius:50%;border:1px solid var(--line)}
+.ring-outer{inset:0;background:radial-gradient(circle,var(--accent-light),transparent 70%)}
+.ring-inner{inset:26px;background:var(--panel)}
+.empty-detail-icon{position:relative;width:76px;height:76px;border-radius:22px;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,#4059e4,#14bbca);box-shadow:0 14px 30px #172b9c30}
+.empty-detail-spark{position:absolute;right:20px;top:18px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--panel);color:var(--accent);border:1px solid var(--line)}
+.empty-detail-stats{display:flex;gap:10px;margin-top:10px}
+.empty-detail-stats span{background:var(--surface-soft);border:1px solid var(--line);border-radius:999px;padding:6px 14px;color:var(--muted);font-size:12px}
+.empty-detail-stats b{color:var(--ink);margin-right:3px}
+
+/* Pricing inbox: the page itself never scrolls. The list and the reading pane scroll inside their own panels.
+   Rules use .main for higher specificity than the prototype stylesheet, which loads later. */
+.main .inbox-shell{grid-template-rows:minmax(0,1fr);min-height:480px}
+.main .inbox-list,.main .detail{min-height:0}
+.main .threads{min-height:0}
+@media(max-width:760px){.main .inbox-shell{min-height:calc(100vh - 130px)}}
+.recent-panel .inquiry:hover{background:var(--surface-soft)!important}
+.recent-panel .inquiry:hover .sender-avatar{background:color-mix(in srgb,var(--accent) 18%,var(--panel))}
