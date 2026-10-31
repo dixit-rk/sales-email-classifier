@@ -5,3 +5,4 @@
 .playground-link svg:first-child{flex-shrink:0}
 .playground-link span{display:grid;flex:1;gap:2px;font-weight:700}
 .playground-link small{font-weight:400;opacity:.75}
+.login-footer a,.fine a{color:inherit;text-decoration:underline;text-underline-offset:2px}

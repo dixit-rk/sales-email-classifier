@@ -36,9 +36,11 @@ export function LoginCard() {
           <span>Try the AI playground<small>No sign-in needed. See what the AI does with an email.</small></span>
           <ArrowRight size={16} aria-hidden="true" />
         </Link>
-        <div className="fine">ChemQuote asks for Gmail access (the gmail.modify permission) only to read new emails and add a label. You can revoke it from your Google account at any time.</div>
+        <div className="fine">ChemQuote asks for Gmail access (the gmail.modify permission) only to read new emails and add a label. You can revoke it from your Google account at any time. By continuing you agree to the <Link to={ROUTES.terms}>Terms</Link> and <Link to={ROUTES.privacy}>Privacy Policy</Link>.</div>
       </div>
-      <div className="login-footer">© 2026 ChemQuote AI <span>·</span> Sales intelligence, simplified.</div>
+      <div className="login-footer">
+        © 2026 ChemQuote AI <span>·</span> <Link to={ROUTES.privacy}>Privacy</Link> <span>·</span> <Link to={ROUTES.terms}>Terms</Link>
+      </div>
     </section>
   );
 }

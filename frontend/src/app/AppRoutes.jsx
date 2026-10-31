@@ -14,6 +14,8 @@ const CatalogPage = lazy(() => import("../pages/CatalogPage"));
 const SettingsPage = lazy(() => import("../pages/SettingsPage"));
 const GuidePage = lazy(() => import("../pages/GuidePage"));
 const PlaygroundPage = lazy(() => import("../pages/PlaygroundPage"));
+const PrivacyPage = lazy(() => import("../pages/PrivacyPage"));
+const TermsPage = lazy(() => import("../pages/TermsPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 
 /** Route table: public login, then every signed-in page inside the shell. */
@@ -24,6 +26,8 @@ export function AppRoutes() {
         <Routes>
           <Route path={ROUTES.login} element={<LoginPage />} />
           <Route path={ROUTES.playground} element={<PlaygroundPage />} />
+          <Route path={ROUTES.privacy} element={<PrivacyPage />} />
+          <Route path={ROUTES.terms} element={<TermsPage />} />
           <Route element={<ProtectedRoute />}>
             <Route element={<AppShell />}>
               <Route path="/" element={<Navigate to={ROUTES.overview} replace />} />

@@ -8,4 +8,6 @@ export const ROUTES = {
   settings: "/settings",
   guide: "/guide",
   playground: "/playground",
+  privacy: "/privacy",
+  terms: "/terms",
 };
