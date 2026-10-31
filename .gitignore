@@ -1,3 +1,20 @@
+# dependencies and build output
 node_modules/
-.env
 dist/
+dist-ssr/
+
+# secrets and local configuration: never commit these
+.env
+.env.*
+!.env.example
+
+# assistant and editor files kept local
+CLAUDE.md
+.claude/
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# logs and OS files
+*.log
+.DS_Store
