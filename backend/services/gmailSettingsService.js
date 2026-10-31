@@ -8,6 +8,8 @@ const { isGmailAuthError } = require("../utils/gmailErrors");
 
 const BAD_REQUEST = 400;
 const CONFLICT = 409;
+const BAD_GATEWAY = 502;
+const CANNOT_ADD_LABEL = "Cannot add label. Please try again, or choose a different name.";
 const RECONNECT_MESSAGE = "Your Gmail connection has expired. Reconnect it in the Gmail connection card first.";
 
 /**
@@ -45,7 +47,10 @@ async function createInGmail(user, name) {
     } catch (error) {
         if (isGmailAuthError(error)) throw new HttpError(CONFLICT, RECONNECT_MESSAGE);
         if (error.code === BAD_REQUEST) throw new HttpError(BAD_REQUEST, `Gmail does not accept the label name "${name}"`);
-        throw error;
+
+        // Anything else (Gmail unavailable, a name clash, a timeout) is shown plainly instead of as a server error
+        console.error("Adding the Gmail label failed:", error.code ?? "", error.message);
+        throw new HttpError(BAD_GATEWAY, CANNOT_ADD_LABEL);
     }
 }
 
@@ -56,7 +61,12 @@ async function createInGmail(user, name) {
 async function replaceLabel(user, name) {
     const { created } = await createInGmail(user, name);
 
-    await User.updateOne({ _id: user._id }, { $set: { labelName: name } });
+    try {
+        await User.updateOne({ _id: user._id }, { $set: { labelName: name } });
+    } catch (error) {
+        console.error("Saving the Gmail label failed:", error.message);
+        throw new HttpError(BAD_GATEWAY, CANNOT_ADD_LABEL);
+    }
 
     return { name, createdInGmail: created };
 }

@@ -3,6 +3,9 @@ import { useAsyncResource } from "../../../shared/hooks/useAsyncResource";
 import { useToast } from "../../../shared/toast/toastContext";
 import { fetchLabel, saveLabel } from "../api/gmailApi";
 
+const SERVER_ERROR = 500;
+const CANNOT_ADD_LABEL = "Cannot add label. Please try again, or choose a different name.";
+
 /** The current label plus `save`, which resolves to an error message or null. */
 export function useLabel() {
   const { data, error, reload } = useAsyncResource("gmail-label", fetchLabel);
@@ -25,7 +28,7 @@ export function useLabel() {
         reload();
         return null;
       } catch (failure) {
-        return failure.message;
+        return failure.status >= SERVER_ERROR ? CANNOT_ADD_LABEL : failure.message;
       } finally {
         setSaving(false);
       }
