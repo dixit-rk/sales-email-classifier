@@ -15,7 +15,12 @@ export const MANAGE_ITEMS = [
 
 export const HELP_ITEM = { to: ROUTES.guide, label: "Help & support", icon: CircleHelp };
 
-export const MOBILE_ITEMS = [WORKSPACE_ITEMS[0], WORKSPACE_ITEMS[1], WORKSPACE_ITEMS[2], WORKSPACE_ITEMS[3], MANAGE_ITEMS[1]];
+const MOBILE_LABELS = { [ROUTES.inbox]: "Inbox", [ROUTES.review]: "Review", [ROUTES.catalog]: "Catalog" };
+
+export const MOBILE_ITEMS = [...WORKSPACE_ITEMS, ...MANAGE_ITEMS].map((item) => ({
+  ...item,
+  label: MOBILE_LABELS[item.to] ?? item.label,
+}));
 
 /** Label of the nav item for a path, used by the breadcrumb and placeholder pages. */
 export const labelForPath = (pathname) =>
