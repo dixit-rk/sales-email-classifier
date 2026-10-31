@@ -28,7 +28,8 @@ async function startGmailWatch(user) {
         }
     });
 
-    user.gmailHistoryId = data.historyId;
+    // A renewal keeps the existing cursor so emails that arrived in between are still fetched
+    user.gmailHistoryId = user.gmailHistoryId || data.historyId;
     user.gmailWatchExpiration = new Date(
         Number(data.expiration)
     );

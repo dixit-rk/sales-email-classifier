@@ -16,13 +16,27 @@ async function processGmailHistory(userId) {
     const messageIds = new Set();
 
     do {
-        const { data } = await gmail.users.history.list({
-            userId: "me",
-            startHistoryId: user.gmailHistoryId,
-            historyTypes: ["messageAdded"],
-            pageToken,
-            maxResults: 100
-        });
+        let data;
+
+        try {
+            ({ data } = await gmail.users.history.list({
+                userId: "me",
+                startHistoryId: user.gmailHistoryId,
+                historyTypes: ["messageAdded"],
+                pageToken,
+                maxResults: 100
+            }));
+        } catch (error) {
+            if (error.code !== 404 && error.response?.status !== 404) throw error;
+
+            // Gmail keeps history for about a week; an older cursor cannot be resumed
+            const { data: profile } = await gmail.users.getProfile({ userId: "me" });
+
+            user.gmailHistoryId = profile.historyId;
+            await user.save();
+
+            return { processed: 0, historyId: profile.historyId, cursorReset: true };
+        }
 
         for (const history of data.history || []) {
             for (const item of history.messagesAdded || []) {

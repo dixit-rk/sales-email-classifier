@@ -2,7 +2,7 @@ const { HttpError } = require("./httpError");
 
 const BAD_REQUEST = 400;
 const MAX_DISPLAY_NAME_LENGTH = 60;
-const PROFILE_FIELDS = "name displayName email picture gmailConnected";
+const PROFILE_FIELDS = "name displayName email picture gmailConnected gmailWatchExpiration";
 
 /** Maps a User document to what the browser may see; `name` is the display name, falling back to the Google name. */
 function toProfile(user) {
@@ -11,7 +11,8 @@ function toProfile(user) {
         googleName: user.name,
         email: user.email,
         picture: user.picture,
-        gmailConnected: user.gmailConnected
+        gmailConnected: user.gmailConnected,
+        gmailWatching: Boolean(user.gmailConnected && user.gmailWatchExpiration && new Date(user.gmailWatchExpiration) > new Date())
     };
 }
 

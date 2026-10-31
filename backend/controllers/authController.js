@@ -4,6 +4,7 @@ const createOAuthClient = require("../config/google");
 const User = require("../models/User");
 const { encrypt } = require("../utils/encryption");
 const { ensureConfiguredLabel } = require("../services/gmailLabelService");
+const { ensureWatch } = require("../services/gmailWatchService");
 const {
     toProfile,
     parseDisplayName,
@@ -113,6 +114,12 @@ exports.googleCallback = async (req, res, next) => {
             await ensureConfiguredLabel(user);
         } catch (labelError) {
             console.error("Gmail label setup failed:", labelError.message);
+        }
+
+        try {
+            await ensureWatch(user);
+        } catch (watchError) {
+            console.error("Gmail watch setup failed:", watchError.message);
         }
 
         req.session.regenerate((err) => {

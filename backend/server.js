@@ -17,6 +17,7 @@ const playgroundRoutes = require("./routes/playgroundRoutes");
 const playgroundConfig = require("./config/playground");
 const { sessionCookieOptions } = require("./config/session");
 const { initRealtime } = require("./services/realtimeService");
+const { startWatchRenewal } = require("./services/gmailWatchService");
 const { HttpError } = require("./utils/httpError");
 
 const app = express();
@@ -78,20 +79,23 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
+// Listen first so the host sees the app start straight away; database calls wait for the connection.
+const server = http.createServer(app);
+
+initRealtime(server, {
+    origin: process.env.FRONTEND_URL,
+    sessionMiddleware
+});
+
+server.listen(PORT, () => {
+    console.log(`Backend running on port ${PORT}`);
+});
+
 mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
         console.log("MongoDB Atlas connected!");
 
-        const server = http.createServer(app);
-
-        initRealtime(server, {
-            origin: process.env.FRONTEND_URL,
-            sessionMiddleware
-        });
-
-        server.listen(PORT, () => {
-            console.log(`Backend running on port ${PORT}`);
-        });
+        startWatchRenewal();
     })
     .catch((err) => {
         console.error("MongoDB connection failed:", err.message);

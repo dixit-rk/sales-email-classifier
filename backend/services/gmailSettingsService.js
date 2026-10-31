@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const { getGmailClient } = require("./gmailService");
 const { ensureLabel } = require("./gmailLabelService");
+const { ensureWatch, isWatchActive } = require("./gmailWatchService");
 const { GMAIL_TIMEOUT_MS, CONNECTION_STATUS } = require("../constants/gmail");
 const { HttpError } = require("../utils/httpError");
 const { isGmailAuthError } = require("../utils/gmailErrors");
@@ -21,7 +22,14 @@ async function checkConnection(user) {
 
         await User.updateOne({ _id: user._id }, { $set: { gmailConnected: true } });
 
-        return { status: CONNECTION_STATUS.CONNECTED, email: data.emailAddress, checkedAt };
+        // A valid token is not enough: Gmail must also be set to notify us. Start it here if it is missing.
+        try {
+            await ensureWatch(user);
+        } catch (watchError) {
+            console.error("Gmail watch could not be started:", watchError.message);
+        }
+
+        return { status: CONNECTION_STATUS.CONNECTED, email: data.emailAddress, checkedAt, watching: isWatchActive(user) };
     } catch (error) {
         if (!isGmailAuthError(error)) return { status: CONNECTION_STATUS.UNAVAILABLE, checkedAt };
 

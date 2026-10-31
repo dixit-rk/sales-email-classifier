@@ -6,6 +6,7 @@ import { googleLoginUrl } from "../../auth";
 const PILLS = {
   checking: { className: "pill-muted", text: "Checking…" },
   connected: { className: "online", text: "Connected" },
+  "not-syncing": { className: "pill-warn", text: "Not receiving emails" },
   expired: { className: "pill-warn", text: "Needs attention" },
   unavailable: { className: "pill-muted", text: "Unavailable" },
 };
@@ -13,6 +14,9 @@ const PILLS = {
 const statusOf = ({ data, error, loading }) => {
   if (loading) return "checking";
   if (error) return "unavailable";
+
+  // A valid Google token alone is not enough: Gmail must also be set to notify us of new emails.
+  if (data.status === "connected" && !data.watching) return "not-syncing";
 
   return data.status;
 };
@@ -24,10 +28,23 @@ function Body({ status, connection }) {
     return <p className="connection-note"><LoaderCircle className="spin" size={16} aria-hidden="true" /> Checking your connection with Google…</p>;
   }
 
+  if (status === "not-syncing") {
+    return (
+      <div className="notice warn" role="alert">
+        <TriangleAlert size={18} aria-hidden="true" />
+        <div>
+          <b>Signed in, but new emails are not being picked up</b>
+          <p>Your Google account is connected, but we couldn’t start receiving notifications for {data.email}. Press “Check connection again” to retry. If it keeps happening, reconnect with “Manage connection”.</p>
+        </div>
+      </div>
+    );
+  }
+
   if (status === "connected") {
     return (
       <dl className="detail-list">
         <div><dt>Account</dt><dd>{data.email}</dd></div>
+        <div><dt>New emails</dt><dd>Being received</dd></div>
         <div><dt>Last checked</dt><dd>{formatFullDate(data.checkedAt)}</dd></div>
       </dl>
     );
@@ -60,7 +77,7 @@ function Body({ status, connection }) {
 export function ConnectionCard({ connection }) {
   const status = statusOf(connection);
   const pill = PILLS[status];
-  const needsReconnect = status === "expired";
+  const needsReconnect = status === "expired" || status === "not-syncing";
 
   return (
     <section className="panel settings-card" aria-busy={status === "checking"}>
