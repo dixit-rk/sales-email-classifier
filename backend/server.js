@@ -15,10 +15,15 @@ const statsRoutes = require("./routes/statsRoutes");
 const catalogRoutes = require("./routes/catalogRoutes");
 const playgroundRoutes = require("./routes/playgroundRoutes");
 const playgroundConfig = require("./config/playground");
+const { sessionCookieOptions } = require("./config/session");
 const { initRealtime } = require("./services/realtimeService");
 const { HttpError } = require("./utils/httpError");
 
 const app = express();
+
+if (process.env.NODE_ENV === "production" && playgroundConfig.trustedProxyHops() === 0) {
+    console.warn("NODE_ENV=production uses secure cookies, which need TRUST_PROXY_HOPS (usually 1) behind a hosting proxy; without it sign-in will not stick.");
+}
 
 // How many proxies sit in front of this server (0 = none). Needed to read each visitor's real network address.
 app.set("trust proxy", playgroundConfig.trustedProxyHops());
@@ -37,12 +42,7 @@ const sessionMiddleware = session({
     store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URI
     }),
-    cookie: {
-        httpOnly: true,
-        secure: false, // Local HTTP development only
-        sameSite: "lax",
-        maxAge: 24 * 60 * 60 * 1000
-    }
+    cookie: sessionCookieOptions()
 });
 
 app.use(sessionMiddleware);

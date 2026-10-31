@@ -139,6 +139,18 @@ cd frontend && npm run build     # production build
 cd backend && node testGemini.js # run the AI step once on a sample email
 ```
 
+## Deploying
+
+Set these on the API host (the full list with explanations is in [backend/.env.example](backend/.env.example)):
+
+- `NODE_ENV=production` and `TRUST_PROXY_HOPS=1`. Both are needed: production uses secure cross-site cookies, and those are
+  only sent when the server knows it is behind an HTTPS proxy.
+- `FRONTEND_URL` is the exact address of the deployed frontend (https, no trailing slash). `GOOGLE_CALLBACK_URL` is
+  `https://<your-api>/auth/google/callback`, and the same address must be added as an authorized redirect URI in Google Cloud.
+- `PUBSUB_AUDIENCE` and the push subscription's endpoint must point at `https://<your-api>/webhooks/gmail`.
+- Allow the API host in MongoDB Atlas under Network Access.
+- On the frontend host set `VITE_API_URL=https://<your-api>` before building.
+
 ## The public playground
 
 `/playground` runs the same AI and matching on products and an email the visitor types, with no sign-in and no inbox access.
@@ -166,8 +178,8 @@ are updated rather than duplicated.
 - The Gmail watch is not started or renewed automatically. It must be started once per user (`POST /api/gmail/watch` while
   signed in) and Gmail expires it after about seven days.
 - Approving a message in Needs review does not yet apply the Gmail label.
-- The session cookie is set with `secure: false` for local HTTP. Before serving over HTTPS, change it (and use
-  `sameSite: "none"` if the frontend and API are on different domains).
+- Sign-in uses a cross-site cookie when the frontend and API are on different domains (for example Vercel and Render).
+  Chrome, Edge and Firefox allow it; Safari and some privacy settings block it. Hosting both under one domain avoids that.
 - CORS allows a single origin (`FRONTEND_URL`).
 - There is no rate limiting on search or catalog upload.
 - There are no automated tests; the project was verified by hand and with scripted browser checks during development.

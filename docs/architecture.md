@@ -66,7 +66,7 @@ PORT, TRUST_PROXY_HOPS, PLAYGROUND_LIMIT_PER_DEVICE, PLAYGROUND_LIMIT_PER_IP, PL
 - Approving a review email does not yet apply the Gmail label.
 - No rate limiting on `/api/emails` search.
 - Nothing calls `/api/gmail/watch` automatically; the Gmail watch expires after about 7 days and is never renewed.
-- Session cookie has `secure: false`; set it true behind HTTPS (Vercel/production) along with `sameSite: "none"` if frontend and API are on different domains. CORS uses the single `FRONTEND_URL`.
+- The session cookie comes from `config/session.js`: `secure` + `sameSite: none` when `NODE_ENV=production` (needs `TRUST_PROXY_HOPS` >= 1 behind a proxy, otherwise no cookie is set), `lax` over HTTP in development. Cross-site cookies are blocked by Safari and some privacy settings. CORS uses the single `FRONTEND_URL`.
 - `google-auth-library` is required in `webhookRoutes.js` but not listed in `backend/package.json` (comes in through `googleapis`).
 - `config/db.js` is unused; `server.js` connects itself. `backend/testGemini.js` is a manual script.
 - No rate limiting on routes.
