@@ -2,7 +2,7 @@
 const Email = require("../models/Email");
 const { getGmailClient } = require("./gmailService");
 const { classifySavedEmail } = require("./classificationService");
-const { labelPricingThread } = require("./gmailLabelService");
+const { labelPricingThread, qualifiesForLabel } = require("./gmailLabelService");
 const { emitToUser, EMAIL_CLASSIFIED_EVENT } = require("./realtimeService");
 const { toEmailItem } = require("../utils/emailPresenter");
 
@@ -71,7 +71,7 @@ async function fetchAndSaveEmail(user, messageId) {
             const classifiedEmail = await classifySavedEmail(email._id);
 
             if (classifiedEmail) {
-                if (classifiedEmail.isPricingQuery || classifiedEmail.needsReview) {
+                if (qualifiesForLabel(classifiedEmail) || classifiedEmail.needsReview) {
                     emitToUser(
                         user._id,
                         EMAIL_CLASSIFIED_EVENT,

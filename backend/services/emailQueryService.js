@@ -19,10 +19,12 @@ const toObjectId = (id) => new mongoose.Types.ObjectId(id);
 const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 const VIEW_CONDITIONS = {
+    // The inbox holds exactly the emails that get the Gmail label (a price request that needs no review and
+    // mentions a catalog product), plus emails a person approved in Needs review.
     [VIEWS.INBOX]: {
         isPricingQuery: true,
         $or: [
-            { needsReview: { $ne: true } },
+            { needsReview: { $ne: true }, products: { $elemMatch: { in_catalog: true } } },
             { reviewDecision: REVIEW_DECISIONS.APPROVED }
         ]
     },
