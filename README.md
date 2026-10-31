@@ -104,8 +104,8 @@ cp backend/.env.example backend/.env
 ```
 
 Fill in `backend/.env`; every variable is explained in [backend/.env.example](backend/.env.example). `backend/.env` is ignored by git.
-The frontend needs no configuration for local development. To point it at a different API, create `frontend/.env` with
-`VITE_API_URL=https://your-api.example.com`.
+The frontend needs no configuration for local development. To point it at a different API, copy
+[frontend/.env.example](frontend/.env.example) to `frontend/.env` and set `VITE_API_URL`.
 
 ### 3. Set up Google
 
@@ -149,7 +149,8 @@ Set these on the API host (the full list with explanations is in [backend/.env.e
   `https://<your-api>/auth/google/callback`, and the same address must be added as an authorized redirect URI in Google Cloud.
 - `PUBSUB_AUDIENCE` and the push subscription's endpoint must point at `https://<your-api>/webhooks/gmail`.
 - Allow the API host in MongoDB Atlas under Network Access.
-- On the frontend host set `VITE_API_URL=https://<your-api>` before building.
+- On the frontend host (for example Vercel: root directory `frontend`, framework Vite) set `VITE_API_URL=https://<your-api>` before
+  building. `frontend/vercel.json` makes page links such as `/playground` work after a refresh.
 
 ## The public playground
 
