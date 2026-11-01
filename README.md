@@ -173,15 +173,3 @@ Download the Excel template from the Product catalog page, or use the ready-made
 [docs/samples/catalog-sample.xlsx](docs/samples/catalog-sample.xlsx) (25 products). Columns: **Product name**, **Item Code**,
 **Formula**, **Aliases** (other names customers use, separated by commas). Up to 500 rows and 1 MB per upload; existing products
 are updated rather than duplicated.
-
-## Known limitations
-
-- The Gmail watch is not started or renewed automatically. It must be started once per user (`POST /api/gmail/watch` while
-  signed in) and Gmail expires it after about seven days.
-- Approving a message in Needs review does not yet apply the Gmail label.
-- Sign-in uses a cross-site cookie when the frontend and API are on different domains (for example Vercel and Render).
-  Chrome, Edge and Firefox allow it; Safari and some privacy settings block it. Hosting both under one domain avoids that.
-- CORS allows a single origin (`FRONTEND_URL`).
-- There is no rate limiting on search or catalog upload.
-- There are no automated tests; the project was verified by hand and with scripted browser checks during development.
-- Playground identity is best effort: identical machines can share a device fingerprint, and one office network shares one address.
